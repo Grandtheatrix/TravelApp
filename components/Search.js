@@ -7,9 +7,9 @@ import {
   TouchableOpacity,
   TextInput
 } from "react-native";
-// import Axios from "axios";
-import uuid from "react-native-uuid";
 import { connect } from "react-redux";
+import * as Fetch from "./Api.js";
+import * as Actions from "./Actions.js";
 
 class Search extends React.Component {
   constructor(props) {
@@ -26,29 +26,11 @@ class Search extends React.Component {
   };
   makeFetch = () => {
     try {
-      console.log("making fetch");
-
-      console.log("value to search", this.state.searchBarValue);
-      console.log(
-        "API Query String =>",
-        "https://maps.googleapis.com/maps/api/place/autocomplete/json?input=" +
-          this.state.searchBarValue +
-          "&key=AIzaSyCDxfkVY5XHoepzhZgsBGBWyy5CpDYE6Qo&sessiontoken=" +
-          uuid.v4()
-      );
-      fetch(
-        "https://maps.googleapis.com/maps/api/place/autocomplete/json?input=" +
-          this.state.searchBarValue +
-          "&key=AIzaSyCDxfkVY5XHoepzhZgsBGBWyy5CpDYE6Qo&sessiontoken=" +
-          uuid.v4()
-      )
+      Fetch.autocomplete(this.state.searchBarValue)
         .then(response => response.json())
         .then(responseJson => {
-          console.log(responseJson);
           this.setState({ response: responseJson });
         });
-      //this.setState({response: JSON.stringify(responseJson)}))
-      //return responseJson.movies;
     } catch (error) {
       console.error(error);
     }
@@ -109,7 +91,6 @@ const styles = StyleSheet.create({
     borderRadius: 10
   },
   singleResponse: {
-    //flex: 1,
     width: "100%",
     height: 20,
     fontSize: 10,
@@ -136,8 +117,7 @@ const styles = StyleSheet.create({
 
 const mapDispatchToProps = dispatch => {
   return {
-    current_detail: place_id =>
-      dispatch({ type: "CURRENT_DETAIL", item: place_id })
+    current_detail: place_id => dispatch(Actions.CURRENT_DETAIL(place_id))
   };
 };
 const mapStateToProps = state => {

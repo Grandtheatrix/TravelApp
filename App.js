@@ -14,7 +14,6 @@ import { createStackNavigator, createAppContainer } from "react-navigation";
 import { Provider } from "react-redux";
 import { createStore } from "redux";
 import Reducer from "./reducer";
-//import Axios from "react-native-axios";
 
 const store = createStore(Reducer);
 

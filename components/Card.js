@@ -49,10 +49,7 @@ export default class Card extends React.Component {
                         resizeMode="cover"
                         source={require("../assets/heartIcon.png")}
                       />
-                      <Text style={styles.ratingText}>
-                        {" "}
-                        {this.props.rating}
-                      </Text>
+                      <Text style={styles.ratingText}>{this.props.rating}</Text>
                     </View>
                   </View>
                 )}
@@ -82,7 +79,6 @@ const styles = StyleSheet.create({
     justifyContent: "space-between"
   },
   rating: {
-    //flex: 1,
     height: "30%",
     flexDirection: "row",
     justifyContent: "center",
@@ -92,10 +88,6 @@ const styles = StyleSheet.create({
     margin: 10,
     padding: 10
   },
-  // ratingHeart: {
-  //   height: "50%",
-  //   width: "50%"
-  // },
   ratingText: {
     fontWeight: "bold",
     fontSize: 16,

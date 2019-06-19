@@ -12,6 +12,7 @@ import {
 import { connect } from "react-redux";
 import LinearGradient from "react-native-linear-gradient";
 import CardDetail from "./CardDetail.js";
+import Actions from "./Actions.js";
 
 class Home extends React.Component {
   constructor(props) {
@@ -166,8 +167,6 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: "column",
     justifyContent: "flex-end"
-    // paddingLeft: 15,
-    // paddingRight: 15
   },
   buttonText: {
     fontSize: 18,
@@ -184,7 +183,6 @@ const styles = StyleSheet.create({
     marginBottom: 30,
     marginLeft: 20,
     color: "#ffffff",
-    // paddingLeft: 15,
     backgroundColor: "transparent"
   }
 });
@@ -197,8 +195,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    set_index: index => dispatch({ type: "SET_INDEX", item: index }),
-    current_detail: () => dispatch({ type: "CURRENT_DETAIL", item: false })
+    set_index: index => dispatch(Actions.SET_INDEX(index)),
+    current_detail: () => dispatch(Actions.CURRENT_DETAIL())
   };
 };
 

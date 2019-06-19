@@ -9,10 +9,9 @@ import {
   ImageBackground,
   TextInput
 } from "react-native";
-// import Axios from "axios";
 import { connect } from "react-redux";
-
-const API_KEY = "AIzaSyCDxfkVY5XHoepzhZgsBGBWyy5CpDYE6Qo";
+import * as Fetch from "./Api.js";
+import * as Actions from "./Actions.js";
 
 class CardDetail extends React.Component {
   constructor(props) {
@@ -36,8 +35,6 @@ class CardDetail extends React.Component {
     let state = "";
     let title = "";
     let county = "";
-
-    console.log("address_components", input);
 
     for (let item of input) {
       if (item.types[0] == "locality") {
@@ -74,6 +71,7 @@ class CardDetail extends React.Component {
       backgroundColor: this.state.pinColor
     };
   };
+
   pinPress = () => {
     if (this.state.placeid != false) {
       let bookmark = {
@@ -90,7 +88,6 @@ class CardDetail extends React.Component {
       this.props.current_detail();
       this.props.navigation.navigate("Home");
     } else {
-      console.log("made it to the right place");
       this.props.delete_bookmark(this.props.index);
 
       this.setState({ pin: "Pin to Trip" });
@@ -100,12 +97,7 @@ class CardDetail extends React.Component {
 
   makePhotoFetch = resp => {
     try {
-      fetch(
-        "https://maps.googleapis.com/maps/api/place/photo?maxwidth=1600&photoreference=" +
-          resp.result.photos[0].photo_reference +
-          "&key=" +
-          API_KEY
-      ).then(response => {
+      Fetch.photo(resp.result.photos[0].photo_reference).then(response => {
         this.setState({ photo: { uri: response.url } });
       });
     } catch (error) {
@@ -115,13 +107,7 @@ class CardDetail extends React.Component {
 
   makeDetailsFetch = () => {
     try {
-      fetch(
-        "https://maps.googleapis.com/maps/api/place/details/json?placeid=" +
-          this.state.placeid +
-          "&fields=name,rating,formatted_address,address_component,photo,geometry" +
-          "&key=" +
-          API_KEY
-      )
+      Fetch.detail(this.state.placeid)
         .then(response => response.json())
         .then(responseJson => {
           this.addressComponentParse(responseJson.result.address_components);
@@ -129,17 +115,10 @@ class CardDetail extends React.Component {
             {
               address: responseJson.result.formatted_address,
               rating: responseJson.result.rating,
-              staticMap: {
-                uri:
-                  "https://maps.googleapis.com/maps/api/staticmap?center=" +
-                  responseJson.result.formatted_address +
-                  "&zoom=14&size=300x600&maptype=roadmap&markers=color:red%7C" +
-                  responseJson.result.geometry.location.lat +
-                  "," +
-                  responseJson.result.geometry.location.lng +
-                  "&key=" +
-                  API_KEY
-              }
+              staticMap: Fetch.staticMap(
+                responseJson.result.formatted_address,
+                responseJson.result.geometry.location
+              )
             },
 
             this.makePhotoFetch(responseJson)
@@ -295,17 +274,9 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    add_bookmark: bookmark =>
-      dispatch({
-        type: "ADD_BOOKMARK",
-        item: bookmark
-      }),
-    delete_bookmark: index =>
-      dispatch({
-        type: "DELETE_BOOKMARK",
-        index: index
-      }),
-    current_detail: () => dispatch({ type: "CURRENT_DETAIL", item: false })
+    add_bookmark: bookmark => dispatch(Actions.ADD_BOOKMARK(bookmark)),
+    delete_bookmark: index => dispatch(Actions.DELETE_BOOKMARK(index)),
+    current_detail: () => dispatch(Actions.CURRENT_DETAIL())
   };
 };
 
