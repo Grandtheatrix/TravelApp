@@ -10,8 +10,8 @@ import {
   TextInput
 } from "react-native";
 import { connect } from "react-redux";
-import * as Fetch from "./Api.js";
-import * as Actions from "./Actions.js";
+import * as Fetch from "../Api.js";
+import * as Actions from "../redux/Actions.js";
 
 class CardDetail extends React.Component {
   constructor(props) {

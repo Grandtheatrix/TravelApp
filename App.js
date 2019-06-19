@@ -13,7 +13,7 @@ import {
 import { createStackNavigator, createAppContainer } from "react-navigation";
 import { Provider } from "react-redux";
 import { createStore } from "redux";
-import Reducer from "./reducer";
+import Reducer from "./redux/reducer";
 
 const store = createStore(Reducer);
 
