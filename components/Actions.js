@@ -17,4 +17,3 @@ export const SET_INDEX = index => ({
   type: "SET_INDEX",
   item: index
 });
-export default Actions;

@@ -120,7 +120,6 @@ class CardDetail extends React.Component {
                 responseJson.result.geometry.location
               )
             },
-
             this.makePhotoFetch(responseJson)
           );
         });

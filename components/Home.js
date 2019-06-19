@@ -12,7 +12,7 @@ import {
 import { connect } from "react-redux";
 import LinearGradient from "react-native-linear-gradient";
 import CardDetail from "./CardDetail.js";
-import Actions from "./Actions.js";
+import * as Actions from "./Actions.js";
 
 class Home extends React.Component {
   constructor(props) {

@@ -45,5 +45,3 @@ export const staticMap = (address, loc) => {
       API_KEY
   };
 };
-
-export default Fetch;
